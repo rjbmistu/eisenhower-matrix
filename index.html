@@ -8,6 +8,8 @@
     <!-- Include Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+    <link rel="icon" type="image/x-icon" href="logo.ico">
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Merienda:wght@300..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
@@ -63,6 +65,11 @@
             border-radius: 15px;
             opacity: 0;
             animation: fadeIn 0.5s ease forwards;
+            cursor: pointer; /* Indicate clickable area */
+        }
+
+        .quadrant:hover {
+            background-color: #f0f0f0; /* Subtle hover effect */
         }
 
         @keyframes fadeIn {
@@ -164,22 +171,22 @@
             <button class="reset-button" onclick="resetNotes()">Reset</button>
         </div>
         <div class="matrix">
-            <div class="quadrant" id="q1">
+            <div class="quadrant" id="q1" onclick="selectQuadrant('q1')">
                 <h2>Urgent & Important</h2>
                 <button class="add-note" onclick="addNote('q1')">Add Note</button>
                 <div class="notes"></div>
             </div>
-            <div class="quadrant" id="q2">
+            <div class="quadrant" id="q2" onclick="selectQuadrant('q2')">
                 <h2>Not Urgent & Important</h2>
                 <button class="add-note" onclick="addNote('q2')">Add Note</button>
                 <div class="notes"></div>
             </div>
-            <div class="quadrant" id="q3">
+            <div class="quadrant" id="q3" onclick="selectQuadrant('q3')">
                 <h2>Urgent & Not Important</h2>
                 <button class="add-note" onclick="addNote('q3')">Add Note</button>
                 <div class="notes"></div>
             </div>
-            <div class="quadrant" id="q4">
+            <div class="quadrant" id="q4" onclick="selectQuadrant('q4')">
                 <h2>Not Urgent & Not Important</h2>
                 <button class="add-note" onclick="addNote('q4')">Add Note</button>
                 <div class="notes"></div>
@@ -188,6 +195,9 @@
     </div>
 
     <script>
+        // Variable to track the last selected quadrant
+        let lastSelectedQuadrant = 'q1'; // Default to q1 on a new page
+
         function addNote(quadrantId) {
             const quadrant = document.querySelector(`#${quadrantId} .notes`);
             const note = document.createElement('div');
@@ -199,12 +209,13 @@
             note.appendChild(createEditButtons());
             quadrant.appendChild(note);
             placeCursorAtEnd(p);
+            lastSelectedQuadrant = quadrantId; // Update last selected quadrant
         }
 
         function saveNote(button) {
             const note = button.closest('.note');
             const p = note.querySelector('p');
-            const text = p.innerHTML.trim(); // Store the HTML content
+            const text = p.innerHTML.trim();
             if (text && text !== '<br>') {
                 p.setAttribute('contenteditable', 'false');
                 p.style.background = 'none';
@@ -220,7 +231,7 @@
 
         function editNote(p) {
             const note = p.closest('.note');
-            const text = p.innerHTML; // Preserve HTML
+            const text = p.innerHTML;
             p.setAttribute('contenteditable', 'true');
             p.innerHTML = text;
             note.innerHTML = '';
@@ -266,6 +277,13 @@
         }
 
         document.addEventListener('keydown', function (e) {
+            if (e.altKey && e.key === 'Enter') {
+                addNote(lastSelectedQuadrant); // Add note to last selected quadrant
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('keydown', function (e) {
             if (e.ctrlKey && e.key === 'Enter') {
                 const editable = document.querySelector('[contenteditable="true"]');
                 if (editable) {
@@ -281,12 +299,16 @@
             }
         });
 
+        function selectQuadrant(quadrantId) {
+            lastSelectedQuadrant = quadrantId; // Update last selected quadrant on click
+        }
+
         function saveToLocalStorage() {
             const quadrants = ['q1', 'q2', 'q3', 'q4'];
             const data = {};
             quadrants.forEach(q => {
                 const notes = document.querySelectorAll(`#${q} .note p`);
-                data[q] = Array.from(notes).map(note => note.innerHTML); // Store HTML
+                data[q] = Array.from(notes).map(note => note.innerHTML);
             });
             localStorage.setItem('eisenhowerMatrix', JSON.stringify(data));
         }
@@ -300,7 +322,7 @@
                         const note = document.createElement('div');
                         note.className = 'note';
                         const p = document.createElement('p');
-                        p.innerHTML = html; // Restore HTML directly
+                        p.innerHTML = html;
                         note.appendChild(p);
                         note.appendChild(createNoteButtons());
                         quadrant.appendChild(note);
