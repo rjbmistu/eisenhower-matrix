@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eisenhower Matrix</title>
+    <!-- Include Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="logo.ico">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Eisenhower Matrix</h1>
+            <button class="reset-button" onclick="resetNotes()">Reset</button>
+        </div>
+        <div class="matrix">
+            <div class="quadrant" id="q1" onclick="selectQuadrant('q1')">
+                <h2>Urgent & Important</h2>
+                <button class="add-note" onclick="addNote('q1')">Add Note</button>
+                <div class="notes"></div>
+            </div>
+            <div class="quadrant" id="q2" onclick="selectQuadrant('q2')">
+                <h2>Not Urgent & Important</h2>
+                <button class="add-note" onclick="addNote('q2')">Add Note</button>
+                <div class="notes"></div>
+            </div>
+            <div class="quadrant" id="q3" onclick="selectQuadrant('q3')">
+                <h2>Urgent & Not Important</h2>
+                <button class="add-note" onclick="addNote('q3')">Add Note</button>
+                <div class="notes"></div>
+            </div>
+            <div class="quadrant" id="q4" onclick="selectQuadrant('q4')">
+                <h2>Not Urgent & Not Important</h2>
+                <button class="add-note" onclick="addNote('q4')">Add Note</button>
+                <div class="notes"></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'91fbba96795a7b99',t:'MTc0MTg3MDk3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
